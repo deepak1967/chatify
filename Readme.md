@@ -73,31 +73,11 @@ Angular app runs at `http://localhost:4200`
 
 ---
 
-## 💡 Usage
-
-- Open `http://localhost:4200` in multiple browser windows/tabs
-- Type a message and send — it will be broadcasted to all clients
-- Check the console for connection logs
-
----
-
-## 📷 Screenshots
-
-> _Add screenshots here if needed (UI preview, message logs, etc.)_
-
----
-
 ## 📌 Notes
 
 - Make sure both frontend and backend are running simultaneously.
 - WebSocket connections require matching port and CORS setup between Angular (4200) and Node.js (3000).
 - Socket.IO versions must be compatible (use v4.x on both client and server if possible).
-
----
-
-## 📃 License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 
