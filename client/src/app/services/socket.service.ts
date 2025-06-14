@@ -1,27 +1,34 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
+import { fromEvent } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
-  private socket: Socket | undefined;
+  private socket?: Socket
   private socketUrl: string = environment.socketUrl;
+  private socketIdSubject = new Subject<string>();
 
+  socketIdObservable$ = this.socketIdSubject.asObservable();
 
   constructor() { }
 
   // Manual connection trigger
-  connectSocket(): void {
-    if (!this.socket) {
-      this.socket = io(this.socketUrl, {
-        autoConnect: false
-      });
-      this.socket.connect();
-      console.log('socket connected');
-    }
+  connectSocket(): any {
+    this.socket = io(this.socketUrl, {
+      autoConnect: false
+    });
+
+    this.socket.on("connect", () => {
+      const id: any = this.socket!.id;
+      this.socketIdSubject.next(id)
+    });
+
+    this.socket.connect();
   }
 
   disconnectSocket(): void {
@@ -29,12 +36,23 @@ export class SocketService {
     console.log('socket disconnected');
   }
 
-  joinUser(userName: string) {    
-    this.socket?.emit('joinUser', userName);
+
+
+  sendMessage(chatMessage: { sender: string, content: string }): void {
+    this.socket?.emit('sendMessage', chatMessage);
   }
 
-  sendMessage(msg: string): void {
-    this.socket?.emit('sendMessage', msg);
+
+  receiveMessage(): Observable<any> {
+    return new Observable(observer => {
+      this.socket?.on('receiveMessage', (chatMessage: any) => {
+        observer.next(chatMessage);
+      });
+    });
+  }
+
+  joinUser(userName: string) {
+    this.socket?.emit('joinUser', userName);
   }
 
   getAllUsers(): any {
@@ -44,12 +62,5 @@ export class SocketService {
       });
     });
   }
-
-  getMessages(): Observable<string> {
-    return new Observable(observer => {
-      this.socket?.on('receiveMessage', (msg: string) => {
-        observer.next(msg);
-      });
-    });
-  }
 }
+

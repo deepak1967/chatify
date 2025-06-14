@@ -17,28 +17,24 @@ const setupSocket = (server) => {
   io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
-    socket.on('joinUser', (username) => {
-      const user = {
-        username,
-        id: socket.id
-      }
-
-      const existingUser = users.find(u => u.id === user.id);
-      if (!existingUser) {
-        users.push(user);
-        return;
-      }
-      io.emit('allUsers', users);
-    });
-
-
     // Listen for messages from the client
-    socket.on('sendMessage', (message) => {
-      console.log(`Message received: ${message} by ${socket.id}`);
 
-      // Broadcast the message to all connected clients
-      io.emit('receiveMessage', message);
+    socket.on('sendMessage', (chatMessage, room) => {
+      if (room) {
+        // Connected only those clients which join the room
+        socket.to(room).emit('receiveMessage', chatMessage);
+        console.log(`Message received: ${chatMessage.content} by ${chatMessage.sender}`);
+      } else {
+        // Broadcast the message to all connected clients
+        socket.broadcast.emit('receiveMessage', chatMessage);
+        console.log(`Message received: ${chatMessage.content} by ${chatMessage.sender}`);
+      }
     });
+
+    socket.on('joinRoom', (room) => {
+      socket.join(room);
+    });
+
 
     // Handle disconnections
     socket.on('disconnect', () => {

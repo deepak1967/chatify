@@ -1,5 +1,59 @@
-<div>
-  <!-- <button (click)="connectSocket()">Socket Connect</button> -->
+<div class="app">
+  <!-- Chat Area -->
+  <div class="chat-section">
+    <div class="chat-header">
+      <h2>Chat Room</h2>
+      <div *ngIf="socketId" class="user-id">
+        Your ID: <span id="socketId">{{ socketId }}</span>
+      </div>
+    </div>
+
+    <div class="room-join">
+      <input type="text" id="roomInput" placeholder="Enter Room ID to Join" />
+      <button id="joinRoomBtn">Join Room</button>
+    </div>
+
+    <div class="chat-messages">
+      <div
+        *ngFor="let msg of messages"
+        [ngClass]="{
+          sender: msg.sender === socketId,
+          receiver: msg.sender !== socketId
+        }"
+        class="message"
+      >
+        {{ msg.content }}
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <input
+        type="text"
+        id="messageInput"
+        [(ngModel)]="message"
+        placeholder="Type a message..."
+      />
+      <button id="sendBtn" (click)="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-header">Participants</div>
+    <div class="user-list" id="userList">
+      <div class="user">User A (ID: abc123)</div>
+      <div class="user">User B (ID: xyz789)</div>
+    </div>
+    <div class="sidebar-buttons">
+      <button id="btn1" (click)="connectSocket()">Connect Socket</button>
+      <!-- <button id="btn2" (click)="disConnectSocket()">Disconnected</button> -->
+    </div>
+  </div>
+</div>
+
+<!-- ---------------------------------------------------------------------------- -->
+
+<!-- <div>
   <button (click)="disConnectSocket()">Socket Disconnected</button>
 </div>
 <br />
@@ -18,4 +72,4 @@
     <input [(ngModel)]="message" placeholder="Type a message..." />
     <button (click)="send()">Send</button>
   </div>
-</div>
+</div> -->

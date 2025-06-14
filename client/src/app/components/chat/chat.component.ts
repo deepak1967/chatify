@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -10,14 +11,17 @@ export class ChatComponent {
 
   username: string = ''
   message = '';
-  messages: string[] = [];
+  messages: { sender: string, content: string }[] = [];
+  socketId: any;
+
 
   constructor(private socketService: SocketService) { }
 
   ngOnInit(): void {
-    this.connectSocket();
-    this.getAllUser();
-
+    this.socketService.socketIdObservable$.subscribe(socketId => {
+      this.socketId = socketId;
+    });
+    this.disConnectSocket();
   }
 
   connectSocket() {
@@ -28,20 +32,23 @@ export class ChatComponent {
     this.socketService.disconnectSocket();
   }
 
-  joinUser() {
-    const name = this.username;
-    this.socketService.joinUser(name);
+  receiveMessage(): void {
+    this.socketService.receiveMessage().subscribe((chatMessage: any) => {
+      console.log('Received:', this.messages);
+      this.messages.push(chatMessage);
+
+    });
   }
 
-  getAllUser() {
-    this.socketService.getAllUsers().subscribe((users: any) => {
-      console.log(users);
-    })
-  }
-
-  send(): void {
+  sendMessage(): void {
     if (this.message.trim()) {
-      this.socketService.sendMessage(this.message);
+      const chatMessage = {
+        sender: this.socketId,
+        content: this.message
+      };
+      this.socketService.sendMessage(chatMessage);
+      this.messages.push(chatMessage); // Display own message
+      this.receiveMessage();
       this.message = '';
     }
   }
