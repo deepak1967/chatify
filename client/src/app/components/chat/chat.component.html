@@ -4,7 +4,7 @@
     <div class="chat-header">
       <h2>Chat Room</h2>
       <div *ngIf="socketId" class="user-id">
-        Your ID: <span id="socketId">{{ socketId }}</span>
+        Room ID: <span id="socketId">{{ socketId }}</span>
       </div>
     </div>
 
@@ -45,7 +45,7 @@
       <div class="user">User B (ID: xyz789)</div>
     </div>
     <div class="sidebar-buttons">
-      <button id="btn1" (click)="connectSocket()">Connect Socket</button>
+      <!-- <button id="btn1" (click)="connectSocket()">Connect Socket</button> -->
       <!-- <button id="btn2" (click)="disConnectSocket()">Disconnected</button> -->
     </div>
   </div>

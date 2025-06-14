@@ -21,11 +21,12 @@ export class ChatComponent {
     this.socketService.socketIdObservable$.subscribe(socketId => {
       this.socketId = socketId;
     });
-    this.disConnectSocket();
+    this.connectSocket();
   }
 
   connectSocket() {
     this.socketService.connectSocket();
+    this.receiveMessage();
   }
 
   disConnectSocket() {
@@ -34,9 +35,7 @@ export class ChatComponent {
 
   receiveMessage(): void {
     this.socketService.receiveMessage().subscribe((chatMessage: any) => {
-      console.log('Received:', this.messages);
       this.messages.push(chatMessage);
-
     });
   }
 
@@ -48,7 +47,6 @@ export class ChatComponent {
       };
       this.socketService.sendMessage(chatMessage);
       this.messages.push(chatMessage); // Display own message
-      this.receiveMessage();
       this.message = '';
     }
   }
