@@ -9,8 +9,8 @@
     </div>
 
     <div class="room-join">
-      <input type="text" id="roomInput" placeholder="Enter Room ID to Join" />
-      <button id="joinRoomBtn">Join Room</button>
+      <input type="text" id="roomInput" [(ngModel)]="roomId" placeholder="Enter Room ID to Join" />
+      <button id="joinRoomBtn" (click)="joinRoom()">Join Room</button>
     </div>
 
     <div class="chat-messages">

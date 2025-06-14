@@ -13,6 +13,7 @@ export class ChatComponent {
   message = '';
   messages: { sender: string, content: string }[] = [];
   socketId: any;
+  roomId: any;
 
 
   constructor(private socketService: SocketService) { }
@@ -48,6 +49,14 @@ export class ChatComponent {
       this.socketService.sendMessage(chatMessage);
       this.messages.push(chatMessage); // Display own message
       this.message = '';
+    }
+  }
+
+  joinRoom() {
+    if (this.roomId.trim()) {
+      this.socketService.joinRoom(this.roomId);
+      // this.socketService.socketIdSubject.next(this.roomId)
+      this.roomId = '';
     }
   }
 

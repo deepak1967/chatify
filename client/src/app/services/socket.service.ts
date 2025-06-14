@@ -11,7 +11,7 @@ import { fromEvent } from 'rxjs';
 export class SocketService {
   private socket?: Socket
   private socketUrl: string = environment.socketUrl;
-  private socketIdSubject = new Subject<string>();
+  public socketIdSubject = new Subject<string>();
 
   socketIdObservable$ = this.socketIdSubject.asObservable();
 
@@ -51,8 +51,8 @@ export class SocketService {
     });
   }
 
-  joinUser(userName: string) {
-    this.socket?.emit('joinUser', userName);
+  joinRoom(roomId: string) {
+    this.socket?.emit('joinRoom', roomId);
   }
 
   getAllUsers(): any {
