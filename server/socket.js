@@ -24,11 +24,12 @@ const setupSocket = (server) => {
         // Connected only those clients which join the room
         socket.to(room).emit('receiveMessage', chatMessage);
         console.log(`Message received: ${chatMessage.content} by ${chatMessage.sender}`);
-      } else {
-        // Broadcast the message to all connected clients
-        socket.broadcast.emit('receiveMessage', chatMessage);
-        console.log(`Message received: ${chatMessage.content} by ${chatMessage.sender}`);
-      }
+      } 
+      // else {
+      //   // Broadcast the message to all connected clients
+      //   socket.broadcast.emit('receiveMessage', chatMessage);
+      //   console.log(`Message received: ${chatMessage.content} by ${chatMessage.sender}`);
+      // }
     });
 
     socket.on('joinRoom', (room) => {

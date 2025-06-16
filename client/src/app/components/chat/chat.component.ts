@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -13,7 +12,7 @@ export class ChatComponent {
   message = '';
   messages: { sender: string, content: string }[] = [];
   socketId: any;
-  roomId: any;
+  room: any;
 
 
   constructor(private socketService: SocketService) { }
@@ -46,17 +45,16 @@ export class ChatComponent {
         sender: this.socketId,
         content: this.message
       };
-      this.socketService.sendMessage(chatMessage);
+      this.socketService.sendMessage(chatMessage, this.room);
       this.messages.push(chatMessage); // Display own message
       this.message = '';
     }
   }
 
   joinRoom() {
-    if (this.roomId.trim()) {
-      this.socketService.joinRoom(this.roomId);
-      // this.socketService.socketIdSubject.next(this.roomId)
-      this.roomId = '';
+    if (this.room.trim()) {
+      this.socketService.joinRoom(this.room, );
+      // this.room = '';
     }
   }
 

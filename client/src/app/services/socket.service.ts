@@ -38,8 +38,8 @@ export class SocketService {
 
 
 
-  sendMessage(chatMessage: { sender: string, content: string }): void {
-    this.socket?.emit('sendMessage', chatMessage);
+  sendMessage(chatMessage: { sender: string, content: string }, room:any): void {
+    this.socket?.emit('sendMessage', chatMessage, room);
   }
 
 
@@ -51,8 +51,8 @@ export class SocketService {
     });
   }
 
-  joinRoom(roomId: string) {
-    this.socket?.emit('joinRoom', roomId);
+  joinRoom(room: string) {
+    this.socket?.emit('joinRoom', room);
   }
 
   getAllUsers(): any {
