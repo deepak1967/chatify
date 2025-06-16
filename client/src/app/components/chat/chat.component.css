@@ -1,198 +1,243 @@
- * {
-      box-sizing: border-box;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f3f3f3;
-    }
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+}
+.chat-room {
+  border: 1px solid rgb(129, 163, 240);
+  border-radius: 3px;
+  
+}
 
-    .app {
-      display: flex;
-      height: 100vh;
-    }
+.app {
+  display: flex;
+  height: 80vh;
+}
 
-    /* Left Side Chat Area */
-    .chat-section {
-      flex: 3;
-      display: flex;
-      flex-direction: column;
-      border-right: 1px solid #ccc;
-      background-color: #fff;
-    }
+/* Left Side Chat Area */
+.chat-section {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #ccc;
+  background-color: #fff;
+}
 
-    .chat-header {
-      background-color: #3f51b5;
-      color: white;
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+.chat-header {
+  background-color: #3f51b5;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    .chat-header h2 {
-      margin: 0;
-      font-size: 20px;
-    }
+.chat-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
 
-    .user-id {
-      font-size: 14px;
-    }
+.user-id {
+  font-size: 14px;
+}
 
-    .room-join {
-      display: flex;
-      padding: 10px 20px;
-      gap: 10px;
-      background-color: #e8eaf6;
-    }
+.room-join,
+.room-create {
+  display: flex;
+  padding: 10px 20px;
+  gap: 10px;
+  background-color: #e8eaf6;
+}
 
-    .room-join input {
-      flex: 1;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
+.room-join input,
+.room-create input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
-    .room-join button {
-      padding: 8px 12px;
-      background-color: #3f51b5;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+.room-join button,
+.room-create button {
+  padding: 8px 12px;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
-    .chat-messages {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-      background-color: #f9f9f9;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+.chat-messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
-    .message {
-      max-width: 60%;
-      padding: 10px 14px;
-      border-radius: 12px;
-      line-height: 1.4;
-    }
+.message {
+  max-width: 60%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  line-height: 1.4;
+}
 
-    .receiver {
-      align-self: flex-start;
-      background-color: #e0e0e0;
-    }
+.receiver {
+  align-self: flex-start;
+  background-color: #e0e0e0;
+}
 
-    .sender {
-      align-self: flex-end;
-      background-color: #3f51b5;
-      color: white;
-    }
+.sender {
+  align-self: flex-end;
+  background-color: #3f51b5;
+  color: white;
+}
 
-    .chat-input {
-      display: flex;
-      padding: 15px 20px;
-      border-top: 1px solid #ddd;
-      gap: 10px;
-      background-color: #fff;
-    }
+.chat-input {
+  display: flex;
+  padding: 15px 20px;
+  border-top: 1px solid #ddd;
+  gap: 10px;
+  background-color: #fff;
+}
 
-    .chat-input input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-    }
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+}
 
-    .chat-input button {
-      padding: 10px 16px;
-      background-color: #3f51b5;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-    }
+.chat-input button {
+  padding: 10px 16px;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
 
-    /* Right Sidebar */
-    .sidebar {
-      flex: 1;
-      background-color: #f5f5f5;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+/* Right Sidebar */
+.sidebar {
+  flex: 1;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-    .sidebar-header {
-      padding: 15px;
-      background-color: #ddd;
-      font-weight: bold;
-      text-align: center;
-    }
+.sidebar-header {
+  padding: 15px;
+  background-color: #ddd;
+  font-weight: bold;
+  text-align: center;
+}
 
-    .user-list {
-      flex: 1;
-      padding: 10px 15px;
-      overflow-y: auto;
-    }
+.user-list {
+  flex: 1;
+  padding: 10px 15px;
+  overflow-y: auto;
+}
 
-    .user {
-      background-color: #ffffff;
-      margin-bottom: 8px;
-      padding: 8px 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
+.user {
+  background-color: #ffffff;
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
 
-    .sidebar-buttons {
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+.sidebar-buttons {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
-    .sidebar-buttons button {
-      padding: 10px;
-      border: none;
-      background-color: #ff9800;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+.sidebar-buttons button {
+  padding: 10px;
+  border: none;
+  background-color: #ff9800;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
-    @media (max-width: 768px) {
-      .app {
-        flex-direction: column;
-      }
+/* Room Selection Buttons */
+.room-selection {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background-color: #e8eaf6;
+}
 
-      .sidebar {
-        order: -1;
-        flex-direction: row;
-        overflow-x: auto;
-      }
+.app-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #3f51b5;
+  margin-right: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
 
-      .sidebar-header {
-        display: none;
-      }
+.room-selection button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #c5cae9;
+  color: #3f51b5;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
 
-      .user-list {
-        display: flex;
-        gap: 10px;
-        flex-direction: row;
-        padding: 10px;
-      }
+.room-selection button:hover {
+  background-color: #9fa8da;
+}
 
-      .user {
-        white-space: nowrap;
-      }
+.room-selection button.active {
+  background-color: #3f51b5;
+  color: white;
+}
 
-      .sidebar-buttons {
-        flex-direction: row;
-      }
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
 
-      .sidebar-buttons button {
-        flex: 1;
-      }
-    }
+  .sidebar {
+    order: -1;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .sidebar-header {
+    display: none;
+  }
+
+  .user-list {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    padding: 10px;
+  }
+
+  .user {
+    white-space: nowrap;
+  }
+
+  .sidebar-buttons {
+    flex-direction: row;
+  }
+
+  .sidebar-buttons button {
+    flex: 1;
+  }
+}

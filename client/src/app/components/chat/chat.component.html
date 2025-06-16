@@ -1,13 +1,11 @@
-<div class="app">
-  <!-- Chat Area -->
-  <div class="chat-section">
-    <div class="chat-header">
-      <h2>Chat Room</h2>
-      <div *ngIf="socketId" class="user-id">
-        Room ID: <span id="socketId">{{ socketId }}</span>
-      </div>
-    </div>
+<!-- Room Selection Buttons -->
+<div class="chat-room">
+  <div class="room-selection">
+    <div class="app-title">Chatify</div>
+  </div>
 
+  <!-- Conditional UI -->
+  <ng-container>
     <div class="room-join">
       <input
         type="text"
@@ -16,67 +14,61 @@
         [(ngModel)]="room"
         placeholder="Enter Room Name to Join"
       />
-      <button id="joinRoomBtn" [disabled]="isdisabled" (click)="joinRoom()">Join Room</button>
+      <button id="joinRoomBtn" [disabled]="isdisabled" (click)="joinRoom()">
+        Join Room
+      </button>
     </div>
+  </ng-container>
 
-    <div class="chat-messages">
-      <div
-        *ngFor="let msg of messages"
-        [ngClass]="{
-          sender: msg.sender === socketId,
-          receiver: msg.sender !== socketId
-        }"
-        class="message"
-      >
-        {{ msg.content }}
+  <div class="app">
+    <!-- Chat Area -->
+    <div class="chat-section">
+      <div class="chat-header">
+        <h2>Chat Room</h2>
+        <div *ngIf="socketId" class="user-id">
+          User ID: <span id="socketId">{{ socketId }}</span>
+        </div>
+      </div>
+
+      <div class="chat-messages">
+        <div
+          *ngFor="let msg of messages"
+          [ngClass]="{
+            sender: msg.sender === socketId,
+            receiver: msg.sender !== socketId
+          }"
+          class="message"
+        >
+          {{ msg.content }}
+        </div>
+      </div>
+
+      <div class="chat-input">
+        <input
+          type="text"
+          id="messageInput"
+          [(ngModel)]="message"
+          placeholder="Type a message..."
+        />
+        <button id="sendBtn" (click)="sendMessage()">Send</button>
       </div>
     </div>
 
-    <div class="chat-input">
-      <input
-        type="text"
-        id="messageInput"
-        [(ngModel)]="message"
-        placeholder="Type a message..."
-      />
-      <button id="sendBtn" (click)="sendMessage()">Send</button>
-    </div>
-  </div>
-
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="sidebar-header">Participants</div>
-    <div class="user-list" id="userList">
-      <div class="user" *ngFor="let participant of participants; let i = index">
-        <p>User {{i+ 1}}: {{ participant.id }}</p>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">Participants</div>
+      <div class="user-list" id="userList">
+        <div
+          class="user"
+          *ngFor="let participant of participants; let i = index"
+        >
+          <p>User {{ i + 1 }}: {{ participant.id }}</p>
+        </div>
+      </div>
+      <div class="sidebar-buttons">
+        <!-- <button id="btn1" (click)="connectSocket()">Connect Socket</button> -->
+        <!-- <button id="btn2" (click)="disConnectSocket()">Disconnected</button> -->
       </div>
     </div>
-    <div class="sidebar-buttons">
-      <!-- <button id="btn1" (click)="connectSocket()">Connect Socket</button> -->
-      <!-- <button id="btn2" (click)="disConnectSocket()">Disconnected</button> -->
-    </div>
   </div>
 </div>
-
-<!-- ---------------------------------------------------------------------------- -->
-
-<!-- <div>
-  <button (click)="disConnectSocket()">Socket Disconnected</button>
-</div>
-<br />
-
-<div>
-  <input [(ngModel)]="username" placeholder="Enter User Name" />
-  <button (click)="joinUser()">Join User</button>
-</div>
-<br />
-
-<div>
-  <div>
-    <div *ngFor="let msg of messages">{{ msg }}</div>
-  </div>
-  <div>
-    <input [(ngModel)]="message" placeholder="Type a message..." />
-    <button (click)="send()">Send</button>
-  </div>
-</div> -->

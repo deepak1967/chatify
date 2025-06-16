@@ -23,6 +23,7 @@ export class ChatComponent {
     this.socketService.socketIdObservable$.subscribe(socketId => {
       this.socketId = socketId;
     });
+
     this.socketService.joinRoomObservable$.subscribe((newParticipant: any) => {
       this.participants = JSON.parse(localStorage.getItem('participants') || '[]');
       this.participants.push(newParticipant);
@@ -76,5 +77,16 @@ export class ChatComponent {
     }
     localStorage.setItem('participants', JSON.stringify(participants));
   }
+  
+  selectedTab: 'join' | 'create' = 'join';
+
+
+// Sample methods
+
+createRoom() {
+  // logic to create room
+}
+
+
 
 }
