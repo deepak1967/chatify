@@ -9,8 +9,14 @@
     </div>
 
     <div class="room-join">
-      <input type="text" id="roomInput" [(ngModel)]="room" placeholder="Enter Room ID to Join" />
-      <button id="joinRoomBtn" (click)="joinRoom()">Join Room</button>
+      <input
+        type="text"
+        id="roomInput"
+        [disabled]="isdisabled"
+        [(ngModel)]="room"
+        placeholder="Enter Room Name to Join"
+      />
+      <button id="joinRoomBtn" [disabled]="isdisabled" (click)="joinRoom()">Join Room</button>
     </div>
 
     <div class="chat-messages">
@@ -41,8 +47,9 @@
   <div class="sidebar">
     <div class="sidebar-header">Participants</div>
     <div class="user-list" id="userList">
-      <div class="user">User A (ID: abc123)</div>
-      <div class="user">User B (ID: xyz789)</div>
+      <div class="user" *ngFor="let participant of participants; let i = index">
+        <p>User {{i+ 1}}: {{ participant.id }}</p>
+      </div>
     </div>
     <div class="sidebar-buttons">
       <!-- <button id="btn1" (click)="connectSocket()">Connect Socket</button> -->

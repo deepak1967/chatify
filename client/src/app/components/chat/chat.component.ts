@@ -13,6 +13,8 @@ export class ChatComponent {
   messages: { sender: string, content: string }[] = [];
   socketId: any;
   room: any;
+  participants: any[] = [];
+  isdisabled: boolean = false;
 
 
   constructor(private socketService: SocketService) { }
@@ -21,7 +23,15 @@ export class ChatComponent {
     this.socketService.socketIdObservable$.subscribe(socketId => {
       this.socketId = socketId;
     });
+    this.socketService.joinRoomObservable$.subscribe((newParticipant: any) => {
+      this.participants = JSON.parse(localStorage.getItem('participants') || '[]');
+      this.participants.push(newParticipant);
+      localStorage.setItem('participants', JSON.stringify(this.participants));
+    });
+
     this.connectSocket();
+    window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
+
   }
 
   connectSocket() {
@@ -53,9 +63,18 @@ export class ChatComponent {
 
   joinRoom() {
     if (this.room.trim()) {
-      this.socketService.joinRoom(this.room, );
-      // this.room = '';
+      this.isdisabled = true
+      this.socketService.joinRoom(this.room);
     }
+  }
+
+  handleBeforeUnload(): void {
+    const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+    const index = participants.findIndex((p: any) => p.id === this.socketId);
+    if (index !== -1) {
+      participants.splice(index, 1);
+    }
+    localStorage.setItem('participants', JSON.stringify(participants));
   }
 
 }

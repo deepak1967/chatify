@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
-import { fromEvent } from 'rxjs';
 
 
 @Injectable({
@@ -12,8 +11,10 @@ export class SocketService {
   private socket?: Socket
   private socketUrl: string = environment.socketUrl;
   public socketIdSubject = new Subject<string>();
-
   socketIdObservable$ = this.socketIdSubject.asObservable();
+
+  public joinRoomSubject = new Subject<string>();
+  joinRoomObservable$ = this.joinRoomSubject.asObservable();
 
   constructor() { }
 
@@ -38,7 +39,7 @@ export class SocketService {
 
 
 
-  sendMessage(chatMessage: { sender: string, content: string }, room:any): void {
+  sendMessage(chatMessage: { sender: string, content: string }, room: any): void {
     this.socket?.emit('sendMessage', chatMessage, room);
   }
 
@@ -52,7 +53,10 @@ export class SocketService {
   }
 
   joinRoom(room: string) {
-    this.socket?.emit('joinRoom', room);
+    this.socket?.emit('joinRoom', room, (message: any) => {
+      console.log(message);
+      this.joinRoomSubject.next(message);
+    });
   }
 
   getAllUsers(): any {

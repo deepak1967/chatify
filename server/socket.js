@@ -24,7 +24,7 @@ const setupSocket = (server) => {
         // Connected only those clients which join the room
         socket.to(room).emit('receiveMessage', chatMessage);
         console.log(`Message received: ${chatMessage.content} by ${chatMessage.sender}`);
-      } 
+      }
       // else {
       //   // Broadcast the message to all connected clients
       //   socket.broadcast.emit('receiveMessage', chatMessage);
@@ -32,18 +32,15 @@ const setupSocket = (server) => {
       // }
     });
 
-    socket.on('joinRoom', (room) => {
+    socket.on('joinRoom', (room, callback) => {
       socket.join(room);
+      callback({ room: room, id: socket.id });
     });
 
 
     // Handle disconnections
     socket.on('disconnect', () => {
       console.log('User disconnected:', socket.id);
-      const index = users.findIndex(user => user.id === socket.id);
-      if (index !== -1) {
-        users.splice(index, 1);
-      }
     });
   });
 }
