@@ -8,6 +8,7 @@
     "client:start": "cd client && ng serve",
     "server:start": "cd server && nodemon server.js",
     "start": "concurrently \"npm run client:start\" \"npm run server:start\"",
+    "client:build": "npm --prefix client run build -- --configuration production",
     "build": "npm run client:build"
   },
   "devDependencies": {
