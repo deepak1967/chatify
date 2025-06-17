@@ -9,7 +9,12 @@
     "client:start": "cd client && ng serve",
     "server:start": "cd server && nodemon server.js",
 
-    "start": "concurrently \"npm run client:start\" \"npm run server:start\""
+    "start": "concurrently \"npm run client:start\" \"npm run server:start\"",
+
+    "client:build": "cd client && ng build --configuration production",
+    "server:build": "echo 'No server build step needed'",
+
+    "build": "npm run client:build && npm run server:build"
   },
   "devDependencies": {
     "concurrently": "^8.0.1"
