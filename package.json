@@ -5,13 +5,10 @@
   "scripts": {
     "install": "npm run install-all",
     "install-all": "npm --prefix client install && npm --prefix server install",
-
     "client:start": "cd client && ng serve",
     "server:start": "cd server && nodemon server.js",
-
     "start": "concurrently \"npm run client:start\" \"npm run server:start\"",
-
-    "build": "npm run client:build && npm run server:build"
+    "build": "npm run client:build"
   },
   "devDependencies": {
     "concurrently": "^8.0.1"
