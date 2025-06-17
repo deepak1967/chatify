@@ -1,4 +1,3 @@
-
 # 💬 Real-Time Chat App
 
 A real-time chat application built using **Angular** (frontend) and **Node.js with Socket.IO** (backend). This app allows users to send and receive messages instantly over WebSocket.
@@ -17,20 +16,20 @@ A real-time chat application built using **Angular** (frontend) and **Node.js wi
 
 ## 🛠️ Tech Stack
 
-| Technology   | Description                |
-|--------------|----------------------------|
-| Angular      | Frontend Framework         |
-| Node.js      | Backend Runtime            |
-| Express.js   | Web server for APIs        |
-| Socket.IO    | Real-time communication    |
-| RxJS         | Reactive programming (Angular) |
+| Technology | Description                    |
+| ---------- | ------------------------------ |
+| Angular    | Frontend Framework             |
+| Node.js    | Backend Runtime                |
+| Express.js | Web server for APIs            |
+| Socket.IO  | Real-time communication        |
+| RxJS       | Reactive programming (Angular) |
 
 ---
 
 ## 📁 Project Structure
 
 ```
-realtime-chat-app/
+chatify/
 ├── client/                   # Angular frontend
 │   ├── src/app/socket.service.ts
 │   └── ...
@@ -47,31 +46,34 @@ realtime-chat-app/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/realtime-chat-app.git
-cd realtime-chat-app
+git clone https://github.com/your-username/chatify.git
+cd chatify
 ```
 
-### 2. Setup Backend (Node.js + Socket.IO)
+### 2. Setup Both Together Run (Node.js + Angular)
 
 ```bash
-cd server
 npm install
-node server.js
+npm start
 ```
 
-By default, server runs at `http://localhost:3000`
+### 2. Setup Run Individually
 
-### 3. Setup Frontend (Angular)
+# Start Angular client only
 
 ```bash
-cd ../client
-npm install
-ng serve
+npm run client:start
 ```
 
 Angular app runs at `http://localhost:4200`
 
----
+# Start Node.js server only
+
+```bash
+npm run server:start
+```
+
+By default, server runs at `http://localhost:3000`
 
 ## 📌 Notes
 
