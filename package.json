@@ -1,0 +1,17 @@
+{
+  "name": "chatify",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install": "npm run install-all",
+    "install-all": "npm --prefix client install && npm --prefix server install",
+
+    "client:start": "cd client && ng serve",
+    "server:start": "cd server && nodemon server.js",
+
+    "start": "concurrently \"npm run client:start\" \"npm run server:start\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  }
+}
