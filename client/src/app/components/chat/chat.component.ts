@@ -25,9 +25,9 @@ export class ChatComponent {
     });
 
     this.socketService.joinRoomObservable$.subscribe((newParticipant: any) => {
-      this.participants = JSON.parse(localStorage.getItem('participants') || '[]');
+      // this.participants = JSON.parse(localStorage.getItem('participants') || '[]');
       this.participants.push(newParticipant);
-      localStorage.setItem('participants', JSON.stringify(this.participants));
+      // localStorage.setItem('participants', JSON.stringify(this.participants));
     });
 
     this.connectSocket();
@@ -51,6 +51,10 @@ export class ChatComponent {
   }
 
   sendMessage(): void {
+    if (!this.room) {
+      alert("You must join a room to start chatting.");
+      return;
+    }
     if (this.message.trim()) {
       const chatMessage = {
         sender: this.socketId,
@@ -75,13 +79,13 @@ export class ChatComponent {
     if (index !== -1) {
       participants.splice(index, 1);
     }
-    localStorage.setItem('participants', JSON.stringify(participants));
+    // localStorage.setItem('participants', JSON.stringify(participants));
   }
-  
+
   selectedTab: 'join' | 'create' = 'join';
 
-createRoom() {
-  // logic to create room
-}
+  createRoom() {
+    // logic to create room
+  }
 
 }
