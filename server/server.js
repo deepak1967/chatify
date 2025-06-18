@@ -1,5 +1,6 @@
 // server.js
 const express = require("express");
+const path = require('path');
 const http = require("http");
 const cors = require('cors');
 const dotenv = require("dotenv");
@@ -22,7 +23,7 @@ app.use(express.static(path.join(__dirname, '../client/dist/client')));
 
 // Fallback route: serve index.html
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/client/index.html'));
+  res.sendFile(path.join(__dirname, '../client/dist/chatify/index.html'));
 });
 
 
