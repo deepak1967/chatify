@@ -19,7 +19,7 @@ const server = http.createServer(app);
 setupSocket(server);
 
 // Serve Angular static files
-app.use(express.static(path.join(__dirname, '../client/dist/client')));
+app.use(express.static(path.join(__dirname, '../client/dist/chatify')));
 
 // Fallback route: serve index.html
 app.get('/', (req, res) => {
