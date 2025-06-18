@@ -53,22 +53,5 @@
         <button id="sendBtn" (click)="sendMessage()">Send</button>
       </div>
     </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="sidebar-header">Participants</div>
-      <div class="user-list" id="userList">
-        <div
-          class="user"
-          *ngFor="let participant of participants; let i = index"
-        >
-          <p>User {{ i + 1 }}: {{ participant.id }}</p>
-        </div>
-      </div>
-      <div class="sidebar-buttons">
-        <!-- <button id="btn1" (click)="connectSocket()">Connect Socket</button> -->
-        <!-- <button id="btn2" (click)="disConnectSocket()">Disconnected</button> -->
-      </div>
-    </div>
   </div>
 </div>

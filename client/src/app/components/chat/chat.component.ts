@@ -80,13 +80,8 @@ export class ChatComponent {
   
   selectedTab: 'join' | 'create' = 'join';
 
-
-// Sample methods
-
 createRoom() {
   // logic to create room
 }
-
-
 
 }
