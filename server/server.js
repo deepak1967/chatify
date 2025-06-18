@@ -17,6 +17,14 @@ const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
 setupSocket(server);
 
+// Serve Angular static files
+app.use(express.static(path.join(__dirname, '../client/dist/client')));
+
+// Fallback route: serve index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/client/index.html'));
+});
+
 
 // Server Start
 server.listen(PORT, () => {
