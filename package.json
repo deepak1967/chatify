@@ -3,12 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "install": "npm --prefix client install && npm --prefix server install",
-    "client:start": "cd client && ng serve",
-    "server:start": "cd server && nodemon server.js",
-    "start": "concurrently \"npm run client:start\" \"npm run server:start\"",
-    "client:build": "npm --prefix client run build -- --configuration production",
-    "build": "npm run client:build"
+    "client:build": "cd client && npm install && ng build --configuration production",
+    "server:start": "cd server && npm install && node server.js",
+    "start": "npm run client:build && npm run server:start"
   },
   "devDependencies": {
     "concurrently": "^8.0.1"
