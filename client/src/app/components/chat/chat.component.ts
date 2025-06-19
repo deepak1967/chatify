@@ -25,7 +25,7 @@ export class ChatComponent {
           this.joinRoom();
         }, 1000);
       }
-      this.username = localStorage.getItem("username");
+      this.username = localStorage.getItem("chatify_user");
     });
   }
 
