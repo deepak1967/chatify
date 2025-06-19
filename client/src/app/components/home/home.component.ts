@@ -22,7 +22,6 @@ export class HomeComponent {
   copyRoomId(): void {
     if (this.generatedRoomId) {
       navigator.clipboard.writeText(this.generatedRoomId).then(() => {
-        alert('Room ID copied!');
       });
     }
   }
