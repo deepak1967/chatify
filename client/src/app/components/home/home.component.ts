@@ -30,7 +30,7 @@ export class HomeComponent {
     if (this.username && this.roomId) {
       console.log('Joining room:', this.roomId, 'as', this.username);
       this.router.navigate([`chat/${this.roomId}`]);
-      localStorage.setItem("chatify_user", this.username)
+      localStorage.setItem("chatify_user", this.username);
     }
   }
 

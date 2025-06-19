@@ -8,8 +8,8 @@ import { Component, HostListener } from '@angular/core';
 export class AppComponent {
   title = 'chatify';
 
-  @HostListener('window:beforeunload', ['$event'])
-  clearLocalStorage(event: Event) {    
-    localStorage.removeItem('chatify_user');
-  }
+  // @HostListener('window:beforeunload', ['$event'])
+  // clearLocalStorage(event: Event) {    
+  //   localStorage.removeItem('chatify_user');
+  // }
 }
