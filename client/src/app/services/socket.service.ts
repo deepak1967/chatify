@@ -39,7 +39,7 @@ export class SocketService {
 
 
 
-  sendMessage(chatMessage: { sender: string, content: string }, room: any): void {
+  sendMessage(chatMessage: { username:string,sender: string, content: string }, room: any): void {
     this.socket?.emit('sendMessage', chatMessage, room);
   }
 

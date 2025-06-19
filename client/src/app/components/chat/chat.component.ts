@@ -11,7 +11,7 @@ export class ChatComponent {
 
   username: any;
   message = '';
-  messages: { sender: string, content: string }[] = [];
+  messages: { username:string, sender: string, content: string }[] = [];
   socketId: any;
   roomId: any;
   participants: any[] = [];
@@ -67,6 +67,7 @@ export class ChatComponent {
     }
     if (this.message.trim()) {
       const chatMessage = {
+        username: this.username,
         sender: this.socketId,
         content: this.message
       };
