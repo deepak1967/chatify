@@ -26,6 +26,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/chatify/index.html'));
 });
 
+app.get('/chat/:roomId', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/chatify/index.html'));
+});
+
+app.use((req, res) => {
+  res.status(404).send({
+    error: 'Path not matched. Please provide a valid route.'
+  });
+});
+
 
 // Server Start
 server.listen(PORT, () => {

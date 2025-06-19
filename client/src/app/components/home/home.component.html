@@ -1,0 +1,38 @@
+<div class="form-container">
+  <h2>Join or Create Chat Room</h2>
+
+  <div class="field-group input-with-button">
+    <label>Generated Room ID:</label>
+    <div class="input-wrapper">
+      <input type="text" [value]="generatedRoomId" readonly />
+      <button class="copy-btn" (click)="copyRoomId()">📋</button>
+    </div>
+    <button (click)="generateRoomId()">Generate</button>
+  </div>
+
+  <form (ngSubmit)="joinRoom()" #roomForm="ngForm">
+    <div class="field-group">
+      <label for="username">Username:</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        required
+        [(ngModel)]="username"
+      />
+    </div>
+
+    <div class="field-group">
+      <label for="roomId">Room ID:</label>
+      <input
+        type="text"
+        id="roomId"
+        name="roomId"
+        required
+        [(ngModel)]="roomId"
+      />
+    </div>
+
+    <button type="submit" [disabled]="!roomForm.form.valid">Join Room</button>
+  </form>
+</div>

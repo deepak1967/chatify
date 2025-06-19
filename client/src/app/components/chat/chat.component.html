@@ -5,28 +5,34 @@
   </div>
 
   <!-- Conditional UI -->
-  <ng-container>
+  <!-- <ng-container>
     <div class="room-join">
       <input
         type="text"
         id="roomInput"
-        [disabled]="isdisabled"
-        [(ngModel)]="room"
+        [(ngModel)]="roomId"
         placeholder="Enter Room Name to Join"
       />
-      <button id="joinRoomBtn" [disabled]="isdisabled" (click)="joinRoom()">
+      <button id="joinRoomBtn" (click)="joinRoom()">
         Join Room
       </button>
     </div>
-  </ng-container>
+  </ng-container> -->
 
   <div class="app">
     <!-- Chat Area -->
     <div class="chat-section">
       <div class="chat-header">
         <h2>Chat Room</h2>
-        <div *ngIf="socketId" class="user-id">
-          User ID: <span id="socketId">{{ socketId }}</span>
+        <div class="user-id" *ngIf="socketId">
+          <b>
+            User Name: <span id="socketId">{{ username }}</span></b
+          >
+        </div>
+        <div class="user-id">
+          <b
+            >Room Id: <span id="socketId">{{ roomId }}</span></b
+          >
         </div>
       </div>
 

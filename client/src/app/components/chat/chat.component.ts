@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -8,21 +9,30 @@ import { SocketService } from 'src/app/services/socket.service';
 })
 export class ChatComponent {
 
-  username: string = ''
+  username: any;
   message = '';
   messages: { sender: string, content: string }[] = [];
   socketId: any;
-  room: any;
+  roomId: any;
   participants: any[] = [];
-  isdisabled: boolean = false;
 
 
-  constructor(private socketService: SocketService) { }
+  constructor(private socketService: SocketService, private activatedRoute: ActivatedRoute) {
+    this.activatedRoute.params.subscribe((params: any) => {
+      this.roomId = params.roomId;
+      if (this.roomId) {
+        setTimeout(() => {
+          this.joinRoom();
+        }, 1000);
+      }
+      this.username = localStorage.getItem("username");
+    });
+  }
 
   ngOnInit(): void {
-    this.socketService.socketIdObservable$.subscribe(socketId => {
+    this.socketService.socketIdSubject.subscribe((socketId: any) => {
       this.socketId = socketId;
-    });
+    })
 
     this.socketService.joinRoomObservable$.subscribe((newParticipant: any) => {
       // this.participants = JSON.parse(localStorage.getItem('participants') || '[]');
@@ -51,7 +61,7 @@ export class ChatComponent {
   }
 
   sendMessage(): void {
-    if (!this.room) {
+    if (!this.roomId) {
       alert("You must join a room to start chatting.");
       return;
     }
@@ -60,16 +70,15 @@ export class ChatComponent {
         sender: this.socketId,
         content: this.message
       };
-      this.socketService.sendMessage(chatMessage, this.room);
+      this.socketService.sendMessage(chatMessage, this.roomId);
       this.messages.push(chatMessage); // Display own message
       this.message = '';
     }
   }
 
   joinRoom() {
-    if (this.room.trim()) {
-      this.isdisabled = true
-      this.socketService.joinRoom(this.room);
+    if (this.roomId.trim()) {
+      this.socketService.joinRoom(this.roomId);
     }
   }
 
