@@ -46,7 +46,7 @@ chatify/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/chatify.git
+git clone https://github.com/deepak1967/chatify.git
 cd chatify
 ```
 
@@ -57,9 +57,9 @@ npm install
 npm start
 ```
 
-### 2. Setup Run Individually
+### 3. Setup Run Individually
 
-# Start Angular client only
+#### Start Angular client only
 
 ```bash
 npm run client:start
@@ -67,7 +67,7 @@ npm run client:start
 
 Angular app runs at `http://localhost:4200`
 
-# Start Node.js server only
+##### Start Node.js server only
 
 ```bash
 npm run server:start
