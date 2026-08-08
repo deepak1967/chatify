@@ -1,25 +1,25 @@
 <div class="chat-screen">
   <header class="chat-topbar">
-    <div>
-      <!-- <div class="app-title">Chatify</div> -->
-      <!-- <div class="room-details">
-        <span class="room-label">Room:</span>
-        <strong>{{ roomId }}</strong>
-      </div> -->
-      <div class="room-details" *ngIf="username">
-        <strong>{{participantNames }}</strong>
+    <div class="topbar-left">
+      <button type="button" class="icon-btn back-btn">←</button>
+      <div class="header-info">
+        <div class="app-title">Chat Room</div>
+        <div class="status-text">{{ isConnected ? 'Connected' : 'Connecting...' }}</div>
       </div>
     </div>
-    <span
-      class="status-pill"
-      [class.connected]="isConnected"
-      [class.disconnected]="!isConnected"
-    >
-      {{ isConnected ? 'Connected' : 'Connecting...' }}
-    </span>
+
+    <div class="user-chip" *ngIf="username">
+      <span class="user-initial">{{ username?.charAt(0)?.toUpperCase() }}</span>
+      <span class="user-name">{{ username }}</span>
+    </div>
   </header>
 
   <section class="chat-panel">
+    <div class="participants-row" *ngIf="participantNames">
+      <div class="participants-label">Participants</div>
+      <div class="participants-list">{{ participantNames }}</div>
+    </div>
+
     <div class="chat-messages" *ngIf="messages.length; else noMessages">
       <div
         *ngFor="let msg of messages"
@@ -48,14 +48,8 @@
       [(ngModel)]="message"
       name="message"
       [disabled]="!isConnected"
-      placeholder="Write a message..."
+      placeholder="Write message..."
     />
-    <button
-      type="submit"
-      id="sendBtn"
-      [disabled]="!message.trim() || !isConnected"
-    >
-      Send
-    </button>
+    <button type="submit" id="sendBtn" [disabled]="!message.trim() || !isConnected">Send</button>
   </form>
 </div>
