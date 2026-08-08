@@ -1,0 +1,55 @@
+<div class="chat-screen">
+  <header class="chat-topbar">
+    <div>
+      <!-- <div class="app-title">Chatify</div> -->
+      <!-- <div class="room-details">
+        <span class="room-label">Room:</span>
+        <strong>{{ roomId }}</strong>
+      </div> -->
+      <div class="room-details" *ngIf="username">
+        <span class="room-label">You:</span>
+        <strong>{{ username }}</strong>
+      </div>
+    </div>
+    <span class="status-pill" [class.connected]="isConnected" [class.disconnected]="!isConnected">
+      {{ isConnected ? 'Connected' : 'Connecting...' }}
+    </span>
+  </header>
+
+  <section class="chat-panel">
+    <div class="chat-messages" *ngIf="messages.length; else noMessages">
+      <div
+        *ngFor="let msg of messages"
+        class="message"
+        [class.sender]="msg.sender === socketId"
+        [class.receiver]="msg.sender !== socketId"
+      >
+        <div class="message-header">
+          <span class="sender-name">{{ msg.sender === socketId ? 'You' : msg.username }}</span>
+        </div>
+        <div class="message-text">{{ msg.content }}</div>
+      </div>
+    </div>
+
+    <ng-template #noMessages>
+      <div class="empty-state">
+        <p>No messages yet.</p>
+        <p>Start the conversation by typing a message.</p>
+      </div>
+    </ng-template>
+
+    <div #chatEnd class="scroll-anchor"></div>
+  </section>
+
+  <form class="chat-input-bar" (ngSubmit)="sendMessage()">
+    <input
+      type="text"
+      id="messageInput"
+      [(ngModel)]="message"
+      name="message"
+      [disabled]="!isConnected"
+      placeholder="Write a message..."
+    />
+    <button type="submit" id="sendBtn" [disabled]="!message.trim() || !isConnected">Send</button>
+  </form>
+</div>

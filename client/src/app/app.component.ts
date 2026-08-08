@@ -1,15 +1,11 @@
-import { Component, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: 'app.component.html',
+  imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent {
-  title = 'chatify';
-
-  @HostListener('window:beforeunload', ['$event'])
-  clearLocalStorage(event: Event) {    
-    localStorage.removeItem('chatify_user');
-  }
+  constructor() {}
 }

@@ -1,4 +1,4 @@
 export const environment = {
-  socketUrl: 'https://chatify-n6wx.onrender.com',
   production: true,
+  socketUrl: 'https://chatify-n6wx.onrender.com'
 };

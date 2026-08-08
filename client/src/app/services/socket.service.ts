@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { io, Socket } from 'socket.io-client';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 
@@ -8,52 +7,103 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class SocketService {
-  private socket?: Socket
-  private socketUrl: string = environment.socketUrl;
+  private socket: any;
+  private socketUrl: string = (environment as any).socketUrl || 'http://localhost:3000';
   public socketIdSubject = new Subject<string>();
   socketIdObservable$ = this.socketIdSubject.asObservable();
+
+  public connected$ = new BehaviorSubject<boolean>(false);
+  private messageSubject = new Subject<any>();
+  public message$ = this.messageSubject.asObservable();
 
   public joinRoomSubject = new Subject<string>();
   joinRoomObservable$ = this.joinRoomSubject.asObservable();
 
+  private pendingRoom?: string;
+  private isConnected = false;
+  private isConnecting = false;
+
   constructor() { }
 
   // Manual connection trigger
-  connectSocket(): any {
-    this.socket = io(this.socketUrl, {
-      autoConnect: false
-    });
+  connectSocket(): void {
+    if (this.socket && this.isConnected) {
+      return;
+    }
 
-    this.socket.on("connect", () => {
-      const id: any = this.socket!.id;
-      this.socketIdSubject.next(id)
-    });
+    if (this.isConnecting) {
+      return;
+    }
 
-    this.socket.connect();
+    this.isConnecting = true;
+
+    import('socket.io-client').then(({ io }) => {
+      this.socket = io(this.socketUrl, { autoConnect: false });
+
+      this.socket.on('connect', () => {
+        this.isConnected = true;
+        this.isConnecting = false;
+        this.connected$.next(true);
+        const id: any = this.socket.id;
+        this.socketIdSubject.next(id);
+        if (this.pendingRoom) {
+          this.joinRoom(this.pendingRoom);
+          this.pendingRoom = undefined;
+        }
+      });
+
+      this.socket.on('receiveMessage', (chatMessage: any) => {
+        this.messageSubject.next(chatMessage);
+      });
+
+      this.socket.on('disconnect', () => {
+        this.isConnected = false;
+        this.connected$.next(false);
+      });
+
+      this.socket.on('connect_error', (err: any) => {
+        this.isConnected = false;
+        this.isConnecting = false;
+        this.connected$.next(false);
+        console.error('Socket connection failed', err);
+      });
+
+      this.socket.connect();
+    }).catch((err) => {
+      this.isConnecting = false;
+      console.error('Failed to load socket.io-client', err);
+    });
   }
 
   disconnectSocket(): void {
     this.socket?.disconnect();
+    this.isConnected = false;
+    this.isConnecting = false;
+    this.connected$.next(false);
     console.log('socket disconnected');
   }
 
 
 
   sendMessage(chatMessage: { username:string,sender: string, content: string }, room: any): void {
-    this.socket?.emit('sendMessage', chatMessage, room);
+    if (!this.isConnected) {
+      console.error('Socket not connected yet');
+      return;
+    }
+    this.socket.emit('sendMessage', chatMessage, room);
   }
 
 
   receiveMessage(): Observable<any> {
-    return new Observable(observer => {
-      this.socket?.on('receiveMessage', (chatMessage: any) => {
-        observer.next(chatMessage);
-      });
-    });
+    return this.message$;
   }
 
   joinRoom(room: string) {
-    this.socket?.emit('joinRoom', room, (message: any) => {
+    if (!this.isConnected) {
+      this.pendingRoom = room;
+      return;
+    }
+    this.socket.emit('joinRoom', room, (message: any) => {
       console.log(message);
       this.joinRoomSubject.next(message);
     });
@@ -67,4 +117,3 @@ export class SocketService {
     });
   }
 }
-
