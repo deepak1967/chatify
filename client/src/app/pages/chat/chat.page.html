@@ -1,15 +1,20 @@
 <div class="chat-screen">
   <header class="chat-topbar">
     <div class="topbar-left">
-      <div class="header-info">
-        <div class="app-title">Chat Room</div>
-        <div class="status-text">{{ isConnected ? 'Connected' : 'Connecting...' }}</div>
+      <div class="user-chip" *ngIf="username">
+        <span class="user-icon"><img src="./../../../assets/icon/user.png" alt=""></span>
+        <div class="user-details">
+          <span class="user-name">{{ username }}</span>
+          <span class="status-text"
+            >{{ isConnected ? 'Connected' : 'Connecting...' }}</span
+          >
+        </div>
       </div>
     </div>
-
-    <div class="user-chip" *ngIf="username">
-      <span class="user-initial">{{ username?.charAt(0)?.toUpperCase() }}</span>
-      <span class="user-name">{{ username }}</span>
+    <div class="topbar-right">
+      <button type="button" class="leave-btn" (click)="leaveRoom()">
+        Leave
+      </button>
     </div>
   </header>
 
@@ -19,7 +24,7 @@
       <div class="participants-list">{{ participantNames }}</div>
     </div>
 
-    <div class="chat-messages" *ngIf="messages.length; else noMessages">
+    <div class="chat-messages" #chatContainer *ngIf="messages.length; else noMessages">
       <div
         *ngFor="let msg of messages"
         class="message"
@@ -28,6 +33,7 @@
       >
         <div class="message-text">{{ msg.content }}</div>
       </div>
+      <div #chatEnd class="scroll-anchor"></div>
     </div>
 
     <ng-template #noMessages>
@@ -36,8 +42,6 @@
         <p>Start the conversation by typing a message.</p>
       </div>
     </ng-template>
-
-    <div #chatEnd class="scroll-anchor"></div>
   </section>
 
   <form class="chat-input-bar" (ngSubmit)="sendMessage()">
@@ -49,6 +53,13 @@
       [disabled]="!isConnected"
       placeholder="Write message..."
     />
-    <button type="submit" id="sendBtn" [disabled]="!message.trim() || !isConnected">Send</button>
+    <button
+      type="submit"
+      id="sendBtn"
+      [disabled]="!message.trim() || !isConnected"
+      aria-label="Send message"
+    >
+      <span class="send-icon">➤</span>
+    </button>
   </form>
 </div>

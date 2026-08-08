@@ -1,7 +1,13 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -9,14 +15,14 @@ import { SocketService } from 'src/app/services/socket.service';
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule],
 })
 export class ChatPage implements OnInit {
-  @ViewChild('chatEnd', { read: ElementRef }) chatEnd?: ElementRef;
+  @ViewChild('chatContainer', { read: ElementRef }) chatContainer?: ElementRef;
 
   username: any;
   message = '';
-  messages: { username:string, sender: string, content: string }[] = [];
+  messages: { username: string; sender: string; content: string }[] = [];
   socketId: any;
   roomId: any;
   participants: any[] = [];
@@ -32,7 +38,11 @@ export class ChatPage implements OnInit {
 
   selectedTab: 'join' | 'create' = 'join';
 
-  constructor(private socketService: SocketService, private activatedRoute: ActivatedRoute) {
+  constructor(
+    private socketService: SocketService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+  ) {
     this.activatedRoute.params.subscribe((params: any) => {
       this.roomId = params.id || params.roomId;
       this.username = localStorage.getItem('chatify_user');
@@ -62,17 +72,19 @@ export class ChatPage implements OnInit {
       this.messages.push({
         username: 'System',
         sender: 'system',
-        content: `${participant.username} has joined the room.`
+        content: `${participant.username} has joined the room.`,
       });
       this.scrollToBottom();
     });
 
     this.socketService.userLeft$.subscribe((participant: any) => {
-      this.participants = this.participants.filter((p) => p.id !== participant.id);
+      this.participants = this.participants.filter(
+        (p) => p.id !== participant.id,
+      );
       this.messages.push({
         username: 'System',
         sender: 'system',
-        content: `${participant.username} has left the room.`
+        content: `${participant.username} has left the room.`,
       });
       this.scrollToBottom();
     });
@@ -94,6 +106,11 @@ export class ChatPage implements OnInit {
     this.socketService.disconnectSocket();
   }
 
+  leaveRoom() {
+    this.router.navigate(['join']);
+    sessionStorage.clear();
+  }
+
   sendMessage(): void {
     if (!this.roomId) {
       alert('You must join a room to start chatting.');
@@ -109,11 +126,12 @@ export class ChatPage implements OnInit {
       const chatMessage = {
         username: this.username,
         sender: this.socketId,
-        content: this.message
+        content: this.message,
       };
       this.socketService.sendMessage(chatMessage, this.roomId);
       this.messages.push(chatMessage); // Display own message
       this.message = '';
+      this.scrollToBottom();
     }
   }
 
@@ -124,7 +142,9 @@ export class ChatPage implements OnInit {
   }
 
   handleBeforeUnload(): void {
-    const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+    const participants = JSON.parse(
+      localStorage.getItem('participants') || '[]',
+    );
     const index = participants.findIndex((p: any) => p.id === this.socketId);
     if (index !== -1) {
       participants.splice(index, 1);
@@ -137,8 +157,10 @@ export class ChatPage implements OnInit {
 
   private scrollToBottom(): void {
     setTimeout(() => {
-      this.chatEnd?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      const container = this.chatContainer?.nativeElement;
+      if (container) {
+        container.scrollTop = container.scrollHeight;
+      }
     }, 0);
   }
-
 }
