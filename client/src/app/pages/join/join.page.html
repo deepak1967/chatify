@@ -1,24 +1,11 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Join</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding" [fullscreen]="true">
   <div class="join-screen">
     <div class="join-card">
       <div class="join-head">
-        <h1>Welcome to Chatify</h1>
-        <p>Enter your username and room ID to start a private chat.</p>
-      </div>
-
-      <div class="field-group input-with-button">
-        <label>Generated Room ID</label>
-        <div class="input-wrapper">
-          <input type="text" [value]="generatedRoomId" readonly />
-          <button class="copy-btn" type="button" (click)="copyRoomId()">Copy</button>
-        </div>
-        <button type="button" class="secondary-btn" (click)="generateRoomId()">Generate Room ID</button>
+        <span class="join-icon">
+          <img src="../../../assets/icon/chat.png" alt="Chat icon" />
+        </span>
+        <h1>Chat Room</h1>
       </div>
 
       <form (ngSubmit)="joinRoom()" #roomForm="ngForm" class="join-form">
@@ -42,11 +29,16 @@
             name="roomId"
             required
             [(ngModel)]="roomId"
-            placeholder="Paste or type room ID"
+            placeholder="Enter Room Id"
           />
         </div>
+        <p class="note">
+          <span>Note:</span> Choose a unique private Room ID to join or create a room.
+        </p>
 
-        <button type="submit" [disabled]="!roomForm.form.valid">Join Room</button>
+        <button type="submit" [disabled]="!roomForm.form.valid">
+          Join Room
+        </button>
       </form>
     </div>
   </div>
