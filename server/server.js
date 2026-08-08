@@ -19,15 +19,15 @@ const server = http.createServer(app);
 setupSocket(server);
 
 // Serve Angular static files
-app.use(express.static(path.join(__dirname, '../client/dist/chatify')));
+app.use(express.static(path.join(__dirname, '../client/www')));
 
 // Fallback route: serve index.html
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/chatify/index.html'));
+  res.sendFile(path.join(__dirname, '../client/www/index.html'));
 });
 
 app.get('/chat/:roomId', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/chatify/index.html'));
+  res.sendFile(path.join(__dirname, '../client/www/index.html'));
 });
 
 app.use((req, res) => {

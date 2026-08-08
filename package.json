@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "install": "npm --prefix client install && npm --prefix server install",
-    "client:start": "cd client &&  ionic serve",
+    "client:start": "cd client && ionic serve",
     "server:start": "cd server && nodemon server.js",
     "start": "concurrently \"npm run client:start\" \"npm run server:start\"",
-    "client:build": "cd client && cordova build android",
+    "client:build": "cd client && npm run build",
     "build": "npm run client:build"
   },
   "devDependencies": {
