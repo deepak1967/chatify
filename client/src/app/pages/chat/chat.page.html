@@ -31,6 +31,11 @@
         [class.sender]="msg.sender === socketId"
         [class.receiver]="msg.sender !== socketId"
       >
+        <div class="message-header" *ngIf="msg.sender !== 'system' && participants.length > 2">
+          <span class="sender-name">
+            {{ msg.sender === socketId ? 'You' : msg.username }}
+          </span>
+        </div>
         <div class="message-text">{{ msg.content }}</div>
       </div>
       <div #chatEnd class="scroll-anchor"></div>
