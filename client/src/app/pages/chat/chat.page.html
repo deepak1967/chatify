@@ -8,7 +8,8 @@
       </div> -->
       <div class="room-details" *ngIf="username">
         <span class="room-label">You:</span>
-        <strong>{{ username }}</strong>
+        
+        <strong>{{participants }}</strong>
       </div>
     </div>
     <span class="status-pill" [class.connected]="isConnected" [class.disconnected]="!isConnected">
@@ -17,19 +18,23 @@
   </header>
 
   <section class="chat-panel">
-    <div class="chat-messages" *ngIf="messages.length; else noMessages">
-      <div
-        *ngFor="let msg of messages"
-        class="message"
-        [class.sender]="msg.sender === socketId"
-        [class.receiver]="msg.sender !== socketId"
-      >
-        <div class="message-header">
-          <span class="sender-name">{{ msg.sender === socketId ? 'You' : msg.username }}</span>
+      <div class="participant-list" *ngIf="participants.length > 0">
+        <div class="participant-title">Participants</div>
+        <div class="participant-item" *ngFor="let participant of participants">
+          {{ participant.username }}
         </div>
-        <div class="message-text">{{ msg.content }}</div>
       </div>
-    </div>
+
+      <div class="chat-messages" *ngIf="messages.length; else noMessages">
+        <div
+          *ngFor="let msg of messages"
+          class="message"
+          [class.sender]="msg.sender === socketId"
+          [class.receiver]="msg.sender !== socketId"
+        >
+          <div class="message-text">{{ msg.content }}</div>
+        </div>
+      </div>
 
     <ng-template #noMessages>
       <div class="empty-state">

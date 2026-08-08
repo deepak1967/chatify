@@ -16,10 +16,15 @@ export class SocketService {
   private messageSubject = new Subject<any>();
   public message$ = this.messageSubject.asObservable();
 
-  public joinRoomSubject = new Subject<string>();
+  public joinRoomSubject = new Subject<any>();
   joinRoomObservable$ = this.joinRoomSubject.asObservable();
+  public userJoinedSubject = new Subject<any>();
+  public userLeftSubject = new Subject<any>();
+  userJoined$ = this.userJoinedSubject.asObservable();
+  userLeft$ = this.userLeftSubject.asObservable();
 
   private pendingRoom?: string;
+  private pendingUsername?: string;
   private isConnected = false;
   private isConnecting = false;
 
@@ -46,14 +51,23 @@ export class SocketService {
         this.connected$.next(true);
         const id: any = this.socket.id;
         this.socketIdSubject.next(id);
-        if (this.pendingRoom) {
-          this.joinRoom(this.pendingRoom);
+        if (this.pendingRoom && this.pendingUsername) {
+          this.joinRoom(this.pendingRoom, this.pendingUsername);
           this.pendingRoom = undefined;
+          this.pendingUsername = undefined;
         }
       });
 
       this.socket.on('receiveMessage', (chatMessage: any) => {
         this.messageSubject.next(chatMessage);
+      });
+
+      this.socket.on('userJoined', (participant: any) => {
+        this.userJoinedSubject.next(participant);
+      });
+
+      this.socket.on('userLeft', (participant: any) => {
+        this.userLeftSubject.next(participant);
       });
 
       this.socket.on('disconnect', () => {
@@ -98,12 +112,13 @@ export class SocketService {
     return this.message$;
   }
 
-  joinRoom(room: string) {
+  joinRoom(room: string, username: string) {
     if (!this.isConnected) {
       this.pendingRoom = room;
+      this.pendingUsername = username;
       return;
     }
-    this.socket.emit('joinRoom', room, (message: any) => {
+    this.socket.emit('joinRoom', room, username, (message: any) => {
       console.log(message);
       this.joinRoomSubject.next(message);
     });

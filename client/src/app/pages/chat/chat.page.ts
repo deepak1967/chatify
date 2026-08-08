@@ -22,6 +22,13 @@ export class ChatPage implements OnInit {
   participants: any[] = [];
   isConnected = false;
 
+  get participantNames(): string {
+    return this.participants
+      .map((participant) => participant.username)
+      .filter(Boolean)
+      .join(', ');
+  }
+
   selectedTab: 'join' | 'create' = 'join';
 
   constructor(private socketService: SocketService, private activatedRoute: ActivatedRoute) {
@@ -43,8 +50,30 @@ export class ChatPage implements OnInit {
       this.socketId = socketId;
     });
 
-    this.socketService.joinRoomObservable$.subscribe((newParticipant: any) => {
-      this.participants.push(newParticipant);
+    this.socketService.joinRoomObservable$.subscribe((response: any) => {
+      if (response?.participants) {
+        this.participants = response.participants;
+      }
+    });
+
+    this.socketService.userJoined$.subscribe((participant: any) => {
+      this.participants.push(participant);
+      this.messages.push({
+        username: 'System',
+        sender: 'system',
+        content: `${participant.username} has joined the room.`
+      });
+      this.scrollToBottom();
+    });
+
+    this.socketService.userLeft$.subscribe((participant: any) => {
+      this.participants = this.participants.filter((p) => p.id !== participant.id);
+      this.messages.push({
+        username: 'System',
+        sender: 'system',
+        content: `${participant.username} has left the room.`
+      });
+      this.scrollToBottom();
     });
 
     this.socketService.message$.subscribe((chatMessage: any) => {
@@ -89,7 +118,7 @@ export class ChatPage implements OnInit {
 
   joinRoom() {
     if (this.roomId && this.roomId.trim()) {
-      this.socketService.joinRoom(this.roomId);
+      this.socketService.joinRoom(this.roomId, this.username || 'Unknown');
     }
   }
 
