@@ -7,34 +7,29 @@
         <strong>{{ roomId }}</strong>
       </div> -->
       <div class="room-details" *ngIf="username">
-        <span class="room-label">You:</span>
-        
-        <strong>{{participants }}</strong>
+        <strong>{{participantNames }}</strong>
       </div>
     </div>
-    <span class="status-pill" [class.connected]="isConnected" [class.disconnected]="!isConnected">
+    <span
+      class="status-pill"
+      [class.connected]="isConnected"
+      [class.disconnected]="!isConnected"
+    >
       {{ isConnected ? 'Connected' : 'Connecting...' }}
     </span>
   </header>
 
   <section class="chat-panel">
-      <div class="participant-list" *ngIf="participants.length > 0">
-        <div class="participant-title">Participants</div>
-        <div class="participant-item" *ngFor="let participant of participants">
-          {{ participant.username }}
-        </div>
+    <div class="chat-messages" *ngIf="messages.length; else noMessages">
+      <div
+        *ngFor="let msg of messages"
+        class="message"
+        [class.sender]="msg.sender === socketId"
+        [class.receiver]="msg.sender !== socketId"
+      >
+        <div class="message-text">{{ msg.content }}</div>
       </div>
-
-      <div class="chat-messages" *ngIf="messages.length; else noMessages">
-        <div
-          *ngFor="let msg of messages"
-          class="message"
-          [class.sender]="msg.sender === socketId"
-          [class.receiver]="msg.sender !== socketId"
-        >
-          <div class="message-text">{{ msg.content }}</div>
-        </div>
-      </div>
+    </div>
 
     <ng-template #noMessages>
       <div class="empty-state">
@@ -55,6 +50,12 @@
       [disabled]="!isConnected"
       placeholder="Write a message..."
     />
-    <button type="submit" id="sendBtn" [disabled]="!message.trim() || !isConnected">Send</button>
+    <button
+      type="submit"
+      id="sendBtn"
+      [disabled]="!message.trim() || !isConnected"
+    >
+      Send
+    </button>
   </form>
 </div>

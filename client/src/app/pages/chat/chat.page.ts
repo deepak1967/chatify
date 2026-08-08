@@ -20,6 +20,7 @@ export class ChatPage implements OnInit {
   socketId: any;
   roomId: any;
   participants: any[] = [];
+  users: any[] = [];
   isConnected = false;
 
   get participantNames(): string {
