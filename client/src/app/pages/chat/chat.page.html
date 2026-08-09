@@ -75,12 +75,9 @@
       type="button"
       id="sendBtn"
       tabindex="-1"
-      (pointerdown)="$event.preventDefault()"
-      (mousedown)="$event.preventDefault()"
-      (touchstart)="$event.preventDefault()"
-      (click)="sendMessage()"
       [disabled]="!message.trim() || !isConnected"
       aria-label="Send message"
+      (pointerdown)="sendMessage($event)"
     >
       <span class="send-icon">➤</span>
     </button>

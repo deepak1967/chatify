@@ -113,7 +113,44 @@ export class ChatPage implements OnInit {
     sessionStorage.clear();
   }
 
-  sendMessage(): void {
+  private keepKeyboardOpen(): void {
+    setTimeout(() => {
+      const input = this.messageInput?.nativeElement;
+
+      if (!input) {
+        return;
+      }
+
+      // Focus input
+      input.focus({
+        preventScroll: true,
+      });
+
+      // Put cursor at the end
+      const length = input.value.length;
+
+      try {
+        input.setSelectionRange(length, length);
+      } catch {
+        // Ignore
+      }
+
+      // Force Android keyboard to show
+      const Keyboard = (window as any).Keyboard;
+
+      if (Keyboard && typeof Keyboard.show === 'function') {
+        Keyboard.show();
+      }
+    }, 150);
+  }
+
+  sendMessage(event?: PointerEvent): void {
+    // IMPORTANT: prevent button from taking focus
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
     if (!this.roomId) {
       alert('You must join a room to start chatting.');
       return;
@@ -145,24 +182,12 @@ export class ChatPage implements OnInit {
     // Clear input
     this.message = '';
 
-    // Scroll messages
+    // Scroll chat
     this.scrollToBottom();
 
-    // IMPORTANT:
-    // Give focus back to input without scrolling the page
-    setTimeout(() => {
-      const input = this.messageInput?.nativeElement;
-
-      if (input) {
-        input.focus({ preventScroll: true });
-
-        // Put cursor at the end
-        const length = input.value.length;
-        input.setSelectionRange(length, length);
-      }
-    }, 50);
+    // Restore focus + keyboard
+    this.keepKeyboardOpen();
   }
-
   onEnter(event: any) {
     // event may be typed as a generic Event in Angular templates
     try {
