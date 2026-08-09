@@ -19,7 +19,8 @@ import { SocketService } from 'src/app/services/socket.service';
 })
 export class ChatPage implements OnInit {
   @ViewChild('chatContainer', { read: ElementRef }) chatContainer?: ElementRef;
-  @ViewChild('messageInput', { read: ElementRef }) messageInput?: ElementRef<HTMLInputElement>;
+  @ViewChild('messageInput', { read: ElementRef })
+  messageInput?: ElementRef<HTMLInputElement>;
 
   username: any;
   message = '';
@@ -123,33 +124,43 @@ export class ChatPage implements OnInit {
       return;
     }
 
-    if (this.message.trim()) {
-      const chatMessage = {
-        username: this.username,
-        sender: this.socketId,
-        content: this.message,
-      };
-      this.socketService.sendMessage(chatMessage, this.roomId);
-      this.messages.push(chatMessage); // Display own message
-      this.message = '';
-      // keep keyboard open by refocusing the input after clearing
-      this.scrollToBottom();
-      setTimeout(() => {
-        try {
-          const input = this.messageInput?.nativeElement;
-          if (input) {
-            input.focus();
-            input.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-          const kb = (window as any).Keyboard;
-          if (kb && typeof kb.show === 'function') {
-            kb.show();
-          }
-        } catch (e) {
-          // ignore focus errors
-        }
-      }, 50);
+    const content = this.message.trim();
+
+    if (!content) {
+      return;
     }
+
+    const chatMessage = {
+      username: this.username,
+      sender: this.socketId,
+      content: content,
+    };
+
+    // Send message
+    this.socketService.sendMessage(chatMessage, this.roomId);
+
+    // Display own message
+    this.messages.push(chatMessage);
+
+    // Clear input
+    this.message = '';
+
+    // Scroll messages
+    this.scrollToBottom();
+
+    // IMPORTANT:
+    // Give focus back to input without scrolling the page
+    setTimeout(() => {
+      const input = this.messageInput?.nativeElement;
+
+      if (input) {
+        input.focus({ preventScroll: true });
+
+        // Put cursor at the end
+        const length = input.value.length;
+        input.setSelectionRange(length, length);
+      }
+    }, 50);
   }
 
   onEnter(event: any) {

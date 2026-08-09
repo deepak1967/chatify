@@ -2,7 +2,9 @@
   <header class="chat-topbar">
     <div class="topbar-left">
       <div class="user-chip" *ngIf="username">
-        <span class="user-icon"><img src="./../../../assets/icon/user.png" alt=""></span>
+        <span class="user-icon"
+          ><img src="./../../../assets/icon/user.png" alt=""
+        /></span>
         <div class="user-details">
           <span class="user-name">{{ username }}</span>
           <span class="status-text"
@@ -24,14 +26,21 @@
       <div class="participants-list">{{ participantNames }}</div>
     </div>
 
-    <div class="chat-messages" #chatContainer *ngIf="messages.length; else noMessages">
+    <div
+      class="chat-messages"
+      #chatContainer
+      *ngIf="messages.length; else noMessages"
+    >
       <div
         *ngFor="let msg of messages"
         class="message"
         [class.sender]="msg.sender === socketId"
         [class.receiver]="msg.sender !== socketId"
       >
-        <div class="message-header" *ngIf="msg.sender !== 'system' && participants.length > 2">
+        <div
+          class="message-header"
+          *ngIf="msg.sender !== 'system' && participants.length > 2"
+        >
           <span class="sender-name">
             {{ msg.sender === socketId ? 'You' : msg.username }}
           </span>
@@ -58,13 +67,17 @@
       name="message"
       [disabled]="!isConnected"
       placeholder="Write message..."
+      autocomplete="off"
       (keydown.enter)="onEnter($event)"
     />
+
     <button
       type="button"
       id="sendBtn"
       tabindex="-1"
       (pointerdown)="$event.preventDefault()"
+      (mousedown)="$event.preventDefault()"
+      (touchstart)="$event.preventDefault()"
       (click)="sendMessage()"
       [disabled]="!message.trim() || !isConnected"
       aria-label="Send message"
