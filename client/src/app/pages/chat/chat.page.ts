@@ -19,6 +19,7 @@ import { SocketService } from 'src/app/services/socket.service';
 })
 export class ChatPage implements OnInit {
   @ViewChild('chatContainer', { read: ElementRef }) chatContainer?: ElementRef;
+  @ViewChild('messageInput', { read: ElementRef }) messageInput?: ElementRef<HTMLInputElement>;
 
   username: any;
   message = '';
@@ -131,8 +132,36 @@ export class ChatPage implements OnInit {
       this.socketService.sendMessage(chatMessage, this.roomId);
       this.messages.push(chatMessage); // Display own message
       this.message = '';
+      // keep keyboard open by refocusing the input after clearing
       this.scrollToBottom();
+      setTimeout(() => {
+        try {
+          const input = this.messageInput?.nativeElement;
+          if (input) {
+            input.focus();
+            input.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+          const kb = (window as any).Keyboard;
+          if (kb && typeof kb.show === 'function') {
+            kb.show();
+          }
+        } catch (e) {
+          // ignore focus errors
+        }
+      }, 50);
     }
+  }
+
+  onEnter(event: any) {
+    // event may be typed as a generic Event in Angular templates
+    try {
+      if (event && typeof event.preventDefault === 'function') {
+        event.preventDefault();
+      }
+    } catch (e) {
+      // ignore
+    }
+    this.sendMessage();
   }
 
   joinRoom() {

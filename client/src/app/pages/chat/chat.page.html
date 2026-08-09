@@ -49,18 +49,23 @@
     </ng-template>
   </section>
 
-  <form class="chat-input-bar" (ngSubmit)="sendMessage()">
+  <form class="chat-input-bar" (submit)="$event.preventDefault()">
     <input
+      #messageInput
       type="text"
       id="messageInput"
       [(ngModel)]="message"
       name="message"
       [disabled]="!isConnected"
       placeholder="Write message..."
+      (keydown.enter)="onEnter($event)"
     />
     <button
-      type="submit"
+      type="button"
       id="sendBtn"
+      tabindex="-1"
+      (pointerdown)="$event.preventDefault()"
+      (click)="sendMessage()"
       [disabled]="!message.trim() || !isConnected"
       aria-label="Send message"
     >
