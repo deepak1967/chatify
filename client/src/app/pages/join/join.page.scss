@@ -70,6 +70,9 @@
   align-items: center;
   min-height: calc(100vh - 56px);
   background: var(--join-screen-bg);
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 .join-card {
